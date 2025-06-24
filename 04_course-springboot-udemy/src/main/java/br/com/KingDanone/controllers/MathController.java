@@ -1,6 +1,7 @@
 package br.com.KingDanone.controllers;
 
 
+import br.com.KingDanone.exception.UnsupportedMathOperationException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,13 +16,13 @@ public class MathController {
             @PathVariable("numberTwo") String numberTwo
     ) throws Exception{
         if (isNumeric(numberOne) || isNumeric(numberTwo))
-            throw new UnsupportedOperationException("Please set a numeric value!");
+            throw new UnsupportedMathOperationException("Please set a numeric value!!");
         return convertDouble(numberOne) + convertDouble(numberTwo);
     }
 
     private Double convertDouble(String strNumber) throws IllegalArgumentException{
         if (strNumber == null || strNumber.isEmpty())
-            throw new UnsupportedOperationException("Please set a numeric value!");
+            throw new UnsupportedMathOperationException("Please set a numeric value!!");
         String number = strNumber.replace(",", ".");
         return Double.parseDouble(number);
     }
