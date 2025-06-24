@@ -11,13 +11,30 @@ public class MathService {
             throw new UnsupportedMathOperationException("Please enter a valid numeric value !");
         return convertDouble(numberOne) + convertDouble(numberTwo);
     }
-//
-//    public Double sub(String numberOne, String numberTwo) throws Exception {
-//        if (isNumeric(numberOne) || isNumeric(numberTwo))
-//            throw new UnsupportedMathOperationException("Please enter a valid numeric value !");
-//        return convertDouble(numberOne) - convertDouble(numberTwo);
-//    }
 
+    public Double sub(String numberOne, String numberTwo) throws Exception {
+        if (!isNumeric(numberOne) || !isNumeric(numberTwo))
+            throw new UnsupportedMathOperationException("Please enter a valid numeric value !");
+        return convertDouble(numberOne) - convertDouble(numberTwo);
+    }
+
+    public Double multi(String numberOne, String numberTwo) throws Exception {
+        if (!isNumeric(numberOne) || !isNumeric(numberTwo))
+            throw new UnsupportedMathOperationException("Please enter a valid numeric value !");
+        return convertDouble(numberOne) * convertDouble(numberTwo);
+    }
+
+    public Double divide(String numberOne, String numberTwo) throws Exception {
+        if (!isNumeric(numberOne) || !isNumeric(numberTwo))
+            throw new UnsupportedMathOperationException("Please enter a valid numeric value");
+        Double b = convertDouble(numberTwo);
+        if (b <= 0) throw new UnsupportedMathOperationException("cannot divide by 0");
+        return convertDouble(numberOne) / convertDouble(numberTwo);
+    }
+
+    public Double squareRoot(String numberOne) throws Exception {
+        return 1D;
+    }
 
     private boolean isNumeric(String strNumber) {
         if (strNumber == null || strNumber.isEmpty()) return false;
