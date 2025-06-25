@@ -46,7 +46,7 @@ public class MathController {
     ) throws Exception{
         return  ResponseEntity.ok(mathService.divide(numberOne, numberTwo));
     }
-    //Raiz Quadrada
+    //Square Root
     @RequestMapping("/squartroot/{numberOne}")
     public ResponseEntity<Double> squartRoot(
             @PathVariable("numberOne") String numberOne

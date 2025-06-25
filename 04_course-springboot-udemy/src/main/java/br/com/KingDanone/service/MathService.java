@@ -33,7 +33,11 @@ public class MathService {
     }
 
     public Double squareRoot(String numberOne) throws Exception {
-        return 1D;
+        if (!isNumeric(numberOne))
+            throw new UnsupportedMathOperationException("Please enter a valid numeric value");
+        if (convertDouble(numberOne) < 0)
+            throw new UnsupportedMathOperationException("cannot square root by number < 0 ");
+        return Math.sqrt(convertDouble(numberOne));
     }
 
     private boolean isNumeric(String strNumber) {
