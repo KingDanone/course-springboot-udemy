@@ -40,6 +40,16 @@ public class MathService {
         return Math.sqrt(convertDouble(numberOne));
     }
 
+    public Double media(String numberOne,
+                        String numberTwo,
+                        String numberThree,
+                        String numberFour
+    ) throws Exception{
+        if (!isNumeric(numberOne) || !isNumeric(numberTwo) || !isNumeric(numberThree) || !isNumeric(numberFour))
+            throw new UnsupportedMathOperationException("Please enter a valid numeric value");
+        return (convertDouble(numberOne) + convertDouble(numberTwo) + convertDouble(numberThree) + convertDouble(numberFour)) / 4;
+    }
+
     private boolean isNumeric(String strNumber) {
         if (strNumber == null || strNumber.isEmpty()) return false;
         String number = strNumber.replace(",", ".");

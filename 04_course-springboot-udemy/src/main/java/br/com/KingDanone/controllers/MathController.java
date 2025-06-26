@@ -53,4 +53,14 @@ public class MathController {
     ) throws Exception{
         return  ResponseEntity.ok(mathService.squareRoot(numberOne));
     }
+    //Media
+    @RequestMapping("/media/{numberOne}/{numberTwo}/{numberThree}/{numberFour}")
+    public ResponseEntity<Double> media(
+            @PathVariable("numberOne") String numberOne,
+            @PathVariable("numberTwo") String numberTwo,
+            @PathVariable("numberThree") String numberThree,
+            @PathVariable("numberFour") String numberFour
+    ) throws Exception {
+        return ResponseEntity.ok(mathService.media(numberOne, numberTwo, numberThree, numberFour));
+    }
 }
