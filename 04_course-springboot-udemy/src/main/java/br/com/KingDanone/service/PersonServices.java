@@ -1,59 +1,72 @@
 package br.com.KingDanone.service;
 
 
+import br.com.KingDanone.data.dto.PersonDTO;
+import br.com.KingDanone.exception.ResourceNotFoundException;
 import br.com.KingDanone.model.Person;
+import br.com.KingDanone.repository.PersonRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import static br.com.KingDanone.mapper.ObjectMapper.parseObject;
+import static br.com.KingDanone.mapper.ObjectMapper.parseListObjects;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.logging.Logger;
 
 @Service
+@Slf4j
 public class PersonServices {
 
 
     private final AtomicLong counter = new AtomicLong();
-    private Logger logger = Logger.getLogger(PersonServices.class.getName());
+    final PersonRepository repository;
 
-    public List<Person> findAll() {
-        logger.info("Finding all people");
-        var persons = new ArrayList<Person>();
-        for (var i = 0; i < 8; i++) {
-            Person person = mockPerson(i);
-            persons.add(person);
-        }
-        return persons;
+    public PersonServices(PersonRepository repository) {
+        this.repository = repository;
     }
 
-    public Person findById(String id) {
-        logger.info("finding one Person!");
-
-        Person person = new Person();
-        person.setId(counter.incrementAndGet());
-        person.setFirstName("Ricardo");
-        person.setLastName("Laranjeira");
-        person.setAddress("São Luís - MA | Brasil");
-        person.setGender("MALE");
-        return person;
+    public List<PersonDTO> findAll() {
+        log.info("finding all peoples");
+        return parseListObjects(repository.findAll(), PersonDTO.class);
     }
 
-    public Person create(Person person){
+    public PersonDTO findById(Long id) {
+        log.info("finding one Person!");
+        var entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
 
-        logger.info("Creating one Person");
-
-        return person;
+        return parseObject(entity, PersonDTO.class);
     }
 
-    public Person update(Person person){
+    public PersonDTO create(PersonDTO person){
+        log.info("Creating one Person");
 
-        logger.info("Updating one Person");
+        var entity = parseObject(person, Person.class);
 
-        return person;
+        return parseObject(repository.save(entity), PersonDTO.class);
     }
 
-    public void delete(String id){
-        logger.info("Deleting one Person");
+    public PersonDTO update(PersonDTO dto){
+
+        log.info("Updating one Person");
+
+        Person entity = repository.findById(dto.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("This Person not exist on Data Source"));
+
+        entity.setFirstName(dto.getFirstName());
+        entity.setLastName(dto.getLastName());
+        entity.setAddress(dto.getAddress());
+        entity.setGender(dto.getGender());
+
+        return parseObject(repository.save(entity), PersonDTO.class);
+    }
+
+    public void delete(Long id){
+        log.info("Deleting one Person");
+
+        Person entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("this ID does not exist in the Data Source"));
+        repository.deleteById(id);
     }
 
     private Person mockPerson(int i) {
